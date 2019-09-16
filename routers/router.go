@@ -7,4 +7,7 @@ import (
 
 func init() {
     beego.Router("/", &controllers.MainController{})
+    beego.Router("/template", &controllers.MainController{}, "get:Template")
+
+    beego.Router("/project/select", &controllers.ProjectController{}, "get:Select")
 }

@@ -1,0 +1,30 @@
+{
+  "name": "gencode_beego",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-pug": "^4.0.1",
+    "gulp-sass": "^4.0.2",
+    "gulp-typescript": "^5.0.1",
+    "gulp-uglify": "^3.0.2",
+    "gulp-vueify": "0.0.3",
+    "gulp-zip": "^5.0.0",
+    "typescript": "^3.5.3",
+    "vue": "^2.6.10",
+    "vue-router": "^3.0.7",
+    "vuetify": "^1.5.16"
+  }
+}

@@ -1,11 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html>
+  <head>
+    <link href="static/css/libs.css" rel="stylesheet"><link href="<< .css>> " rel="stylesheet">
+    <script src="static/js/libs/libs.js"></script>
+    <script src="static/js/libs/moment-with-locales.min.js"></script><script src="<< .js >>" type="module"></script>
+    <link rel="shortcut icon" href="#">
     <meta charset="UTF-8">
-    <title>Title</title>
-    <script type="application/javascript" src="/static/js/main.ts"></script>
-</head>
-<body>
-
-</body>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <title><< .appTitle >></title>
+  </head>
+  <body>
+    <div id="app">
+      <v-app>
+        <v-toolbar app color="primary" dark>
+          <v-toolbar-side-icon @click.stop="drawer=!drawer"></v-toolbar-side-icon>
+          <v-toolbar-title><< .appTitle >></v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-items></v-toolbar-items>
+        </v-toolbar>
+        <v-navigation-drawer app v-model="drawer">
+          <v-list>
+            <v-list-group prepend-icon="accessibility" :value="false">
+              <template v-slot:activator>
+                <v-list-tile>
+                  <v-list-tile-title>Проекты</v-list-tile-title>
+                </v-list-tile>
+              </template>
+              <v-list-tile :to="{path:'/user'}">
+                <v-list-tile-action>
+                  <v-icon></v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title>Все</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile :to="{path:'/user_control'}">
+                <v-list-tile-action>
+                  <v-icon></v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title>Контроль</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list-group>
+            <v-list-group prepend-icon="warning" :value="true">
+              <template v-slot:activator>
+                <v-list-tile>
+                  <v-list-tile-title>Нарушения</v-list-tile-title>
+                </v-list-tile>
+              </template>
+              <v-list-tile :to="{path:'/ot_new'}">
+                <v-list-tile-action>
+                  <v-icon></v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title>Новые</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile :to="{path:'/ot_nevyp'}">
+                <v-list-tile-action>
+                  <v-icon></v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title>Невыполненные</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile :to="{path:'/ot_k_rabote'}">
+                <v-list-tile-action>
+                  <v-icon></v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title>Принять к работе</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list-group>
+            <v-list-group prepend-icon="assignment" :value="false">
+              <template v-slot:activator>
+                <v-list-tile>
+                  <v-list-tile-title>Отчёты</v-list-tile-title>
+                </v-list-tile>
+              </template>
+              <v-list-tile @click.stop="otViewToExcel()">
+                <v-list-tile-action>
+                  <v-icon></v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title>Список нарушений</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list-group>
+          </v-list>
+        </v-navigation-drawer>
+        <v-content>
+          <v-container fluid>
+            <router-view></router-view>
+          </v-container>
+        </v-content>
+        <v-footer color="primary"></v-footer>
+      </v-app>
+    </div>
+  </body>
 </html>

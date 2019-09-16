@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "es6",
+    "moduleResolution": "node",
+    "noImplicitThis": true,
+    "sourceMap": false,
+    "lib": [
+      "dom",
+      "es6",
+      "es2017"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "conf",
+    "controllers",
+    "models",
+    "routers",
+    "tests",
+    "views"
+  ]
+}

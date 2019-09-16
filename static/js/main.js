@@ -1,22 +1,15 @@
-import * as Fetch from "./utils/fetch.js"
-
-declare const VueRouter: typeof import("vue-router/types/router");
-declare const Vue: typeof import("vue/types/vue");
-
+import * as Fetch from "./utils/fetch.js";
 document.addEventListener("DOMContentLoaded", main);
-
-const routes: any = [];
+const routes = [];
 // @ts-ignore
-let router: VueRouter;
+let router;
 // @ts-ignore
-let app: Vue;
-
+let app;
 function main() {
-
     // @ts-ignore
-    router = new VueRouter({routes});
+    router = new VueRouter({ routes });
     // @ts-ignore
-    const app =new Vue({
+    const app = new Vue({
         router,
         data: {
             drawer: false,
@@ -28,7 +21,7 @@ function main() {
         },
         methods: {
             loadProjects() {
-                Fetch.Json("/project/select.json").then((projects)=>{
+                Fetch.Json("/project/select.json").then((projects) => {
                     // @ts-ignore
                     this.projects = projects;
                 });
