@@ -1,14 +1,17 @@
 /**
  * Created by user on 18.08.17.
  */
-export function Html(url) {
+
+console.log("test");
+
+export function Html(url: string): Promise<string> {
     return window.fetch(url, {
         credentials: "same-origin"
     }).then((response) => {
         return response.text();
     });
 }
-export function Json(url, method = "GET", data = null, file = null) {
+export function Json(url: string, method: string = "GET", data: any = null, file: any = null): Promise<any> {
     if (data == null && file == null) {
         return window.fetch(url, {
             credentials: "same-origin",

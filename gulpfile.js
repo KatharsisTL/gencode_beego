@@ -33,7 +33,7 @@ gulp.task('sass', function() {
 
 gulp.task('ts', function() {
     return gulp.src(['./static/js/**/*.ts'])
-        .pipe(tsProject())
+        .pipe(tsProject().on("error", (e)=>{console.log(e);}))
         .pipe(gulp.dest('./static/js'));
 });
 
