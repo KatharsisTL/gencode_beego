@@ -2,8 +2,6 @@
  * Created by user on 18.08.17.
  */
 
-console.log("test");
-
 export function Html(url: string): Promise<string> {
     return window.fetch(url, {
         credentials: "same-origin"

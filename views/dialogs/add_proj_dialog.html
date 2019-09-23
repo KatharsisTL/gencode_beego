@@ -1,0 +1,28 @@
+
+<v-dialog v-model="addProjDialog.visible" width="500">
+  <v-card>
+    <v-card-title>Добавление проекта
+      <v-spacer></v-spacer>
+      <v-btn fab="fab" flat="flat" small="small" @click="addProjDialogClose()">
+        <v-icon>close</v-icon>
+      </v-btn>
+    </v-card-title>
+    <v-divider></v-divider>
+    <v-card-text>
+      <v-form ref="addProjForm" v-model="addProjDialog.valid" lazy-validation="lazy-validation">
+        <v-text-field v-model="addProjDialog.proj.name" :rules="addProjDialog.rules.name" label="Имя проекта" required="required"></v-text-field>
+        <v-text-field v-model="addProjDialog.proj.gen_path" :rules="addProjDialog.rules.gen_path" label="Папка для генерации" required="required"></v-text-field>
+      </v-form>
+    </v-card-text>
+    <v-divider></v-divider>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn color="error" @click="addProjDialogClose()">
+        <v-icon>close</v-icon><span>Отмена</span>
+      </v-btn>
+      <v-btn color="success" @click="addProjDialogSave()">
+        <v-icon>save</v-icon><span>Сохранить</span>
+      </v-btn>
+    </v-card-actions>
+  </v-card>
+</v-dialog>

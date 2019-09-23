@@ -1,33 +1,35 @@
 import * as Fetch from "./utils/fetch.js"
-// @ts-ignore
-import {Vue} from "vue";
-import {IProject} from "./interfaces.js";
-
-declare const VueRouter: typeof import("vue-router/types/router");
-declare const Vue: typeof import("vue/types/vue");
+import {Snackbar} from "./vue/snackbar.js";
 
 document.addEventListener("DOMContentLoaded", main);
 
-const routes: any = [];
-// @ts-ignore
-let router: VueRouter;
-let app: any;
+const routes = [];
+let router;
+let app;
 
 function main() {
-    // @ts-ignore
     router = new VueRouter({routes});
-    // @ts-ignore
     app = new Vue({
         router,
-        data: {
+        data: function() {
+            return {
             drawer: true,
             projects: [],
             addProjDialog: {
                 visible: false,
                 valid: false,
-                proj: {}
+                proj: {},
+                rules: {
+                    name: [
+                        v => !!v || "Не должно быть пустым"
+                    ],
+                    gen_path: [
+                        v => !!v || "Не должно быть пустым"
+                    ]
+                }
             },
-        },
+        }},
+        mixins: [Snackbar],
         created() {
             //this.$router.push({path: "/ot_new"});
             this.loadProjects();
@@ -35,27 +37,31 @@ function main() {
         methods: {
             loadProjects() {
                 Fetch.Json("/project/select.json").then((projects)=>{
-                    // @ts-ignore
                     this.projects = projects;
                 });
             },
             addProjDialogShow() {
-                // @ts-ignore
-                this.proj = <IProject>{
+                this.addProjDialog.proj = {
                     id: 0,
                     name: "",
-                    title: "",
-                    short_title: "",
                     gen_path: ""
                 };
-                // @ts-ignore
                 this.addProjDialog.visible = true;
                 console.log("addProjDialogShow()");
             },
             addProjDialogClose() {
-                // @ts-ignore
                 this.addProjDialog.visible = false;
                 console.log("addProjDialogClose()");
+            },
+            addProjDialogSave() {
+                if(this.addProjDialog.valid) {
+                    console.log(this.addProjDialog.proj);
+                    Fetch.Json("/project/save", "POST", this.addProjDialog.proj).then((res)=>{
+                        console.log(res);
+                    });
+                } else {
+                    this.showSnackbarError("Необходимо корректно заполнить все поля");
+                }
             }
         }
     });

@@ -3,17 +3,21 @@ document.addEventListener("DOMContentLoaded", main);
 const routes = [];
 // @ts-ignore
 let router;
-// @ts-ignore
 let app;
 function main() {
     // @ts-ignore
     router = new VueRouter({ routes });
     // @ts-ignore
-    const app = new Vue({
+    app = new Vue({
         router,
         data: {
-            drawer: false,
-            projects: []
+            drawer: true,
+            projects: [],
+            addProjDialog: {
+                visible: false,
+                valid: false,
+                proj: {}
+            },
         },
         created() {
             //this.$router.push({path: "/ot_new"});
@@ -25,7 +29,26 @@ function main() {
                     // @ts-ignore
                     this.projects = projects;
                 });
+            },
+            addProjDialogShow() {
+                // @ts-ignore
+                this.proj = {
+                    id: 0,
+                    name: "",
+                    title: "",
+                    short_title: "",
+                    gen_path: ""
+                };
+                // @ts-ignore
+                this.addProjDialog.visible = true;
+                console.log("addProjDialogShow()");
+            },
+            addProjDialogClose() {
+                // @ts-ignore
+                this.addProjDialog.visible = false;
+                console.log("addProjDialogClose()");
             }
         }
-    }).$mount("#app");
+    });
+    app.$mount("#app");
 }
