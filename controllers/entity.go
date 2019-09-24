@@ -6,22 +6,22 @@ import (
 	"strconv"
 )
 
-type ProjectController struct {
+type EntityController struct {
 	BaseController
 }
 
-func (c *ProjectController) Select() {
+func (c *EntityController) Select() {
 	if c.Ctx.Input.Param(":ext") == "json" {
-		res := make([]models.Project, 0)
+		res := make([]models.Entity, 0)
 		Db.Order("id desc").Find(&res)
 		c.Data["json"] = res
 		c.ServeJSON()
 	}
 }
 
-func (c *ProjectController) One() {
+func (c *EntityController) One() {
 	if c.Ctx.Input.Param(":ext") == "json" {
-		obj := models.Project{}
+		obj := models.Entity{}
 		s_id := c.Ctx.Input.Param(":id")
 		if id, err := strconv.Atoi(s_id); err != nil {
 			logs.Error(err.Error())
@@ -35,9 +35,9 @@ func (c *ProjectController) One() {
 	}
 }
 
-func (c *ProjectController) Save() {
+func (c *EntityController) Save() {
 	r := BoolResult{Result: false, Error: "Initial state"}
-	obj := models.Project{}
+	obj := models.Entity{}
 	c.ReadInputObj(&obj)
 	if obj.Id == 0 {
 		c.Create(&obj, &r)
@@ -48,11 +48,11 @@ func (c *ProjectController) Save() {
 	c.ServeJSON()
 }
 
-func (c *ProjectController) Create(obj *models.Project, res *BoolResult) {
-	checkObj := models.Project{}
+func (c *EntityController) Create(obj *models.Entity, res *BoolResult) {
+	checkObj := models.Entity{}
 	db := c.GetDb()
 	defer db.Close()
-	db.Where("name = ?", obj.Name).First(&checkObj)
+	db.Where("name = ? and project_id = ?", obj.Name, obj.ProjectId).First(&checkObj)
 	if checkObj.Id > 0 {
 		res.Result = false
 		res.Error = "Такая запись уже есть"
@@ -72,11 +72,11 @@ func (c *ProjectController) Create(obj *models.Project, res *BoolResult) {
 	}
 }
 
-func (c *ProjectController) Update(obj *models.Project, res *BoolResult) {
-	checkObj := models.Project{}
+func (c *EntityController) Update(obj *models.Entity, res *BoolResult) {
+	checkObj := models.Entity{}
 	db := c.GetDb()
 	defer db.Close()
-	db.Where("name = ? and id <> ?", obj.Name, obj.Id).First(&checkObj)
+	db.Where("name = ? and project_id = ? and id <> ?", obj.Name, obj.ProjectId, obj.Id).First(&checkObj)
 	if checkObj.Id > 0 {
 		res.Result = false
 		res.Error = "Такая запись уже есть"
@@ -96,7 +96,7 @@ func (c *ProjectController) Update(obj *models.Project, res *BoolResult) {
 	}
 }
 
-func (c *ProjectController) Delete() {
+func (c *EntityController) Delete() {
 	r := BoolResult{Result: false, Error: "Initial state"}
 	s_id := c.Ctx.Input.Param(":id")
 	if id, err := strconv.Atoi(s_id); err != nil {
@@ -105,7 +105,7 @@ func (c *ProjectController) Delete() {
 	} else {
 		db := c.GetDb()
 		defer db.Close()
-		obj := models.Project{}
+		obj := models.Entity{}
 		db.Where("id = ?", id).First(&obj)
 		//Удаление
 		if obj.Id > 0 {

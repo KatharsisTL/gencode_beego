@@ -10,7 +10,7 @@ type MainController struct {
 }
 
 func (c *MainController) Get() {
-	c.Data["appTitle"] = "Gencode Beego"
+	c.Data["appTitle"] = "Gencode"
 	dt := time.Now().Format("20060102150405")
 	c.Data["css"] = "static/css/app.css?d=" + dt
 	c.Data["js"] = "static/js/main1.js?d=" + dt

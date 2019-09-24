@@ -6,11 +6,19 @@ v-navigation-drawer(app v-model="drawer")
                     v-list-tile-title Проекты
             v-list-tile
                 v-list-tile-action
-                    v-tooltip(bottom)
+                    v-btn(fab dark small color="primary" @click="addProjDialogShow()" title="Добавить проект")
+                        v-icon(dark) add
+                    //v-tooltip(bottom)
                         template(v-slot:activator="{on}")
                             v-btn(fab dark v-on="on" small color="primary" @click="addProjDialogShow()")
                                 v-icon(dark) add
                         span Добавить проект
+            v-list-tile(:to="{path:'/project/'+project.id}" v-for="project in projects" :key="'project'+project.id")
+                v-list-tile-action
+                    v-icon
+                v-list-tile-content
+                    v-list-tile-title {{project.name}}
+
             //v-list-tile(:to="{path:'/user'}")
                 v-list-tile-action
                     v-icon

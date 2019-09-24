@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/json"
 	"github.com/astaxie/beego"
 	"github.com/jinzhu/gorm"
 	"log"
@@ -13,8 +14,9 @@ type BaseController struct {
 }
 
 type BoolResult struct {
-	Result bool   `json:"result"`
-	Error  string `json:"error"`
+	Result bool        `json:"result"`
+	Error  string      `json:"error"`
+	Ext    interface{} `json:"ext"`
 }
 
 //Возвращает объект БД
@@ -29,4 +31,8 @@ func GetDb() *gorm.DB {
 //Возвращает объект БД в контроллере
 func (c *BaseController) GetDb() *gorm.DB {
 	return GetDb()
+}
+
+func (c *BaseController) ReadInputObj(iFace interface{}) {
+	json.Unmarshal([]byte(c.GetString("data")), &iFace)
 }

@@ -28,14 +28,24 @@
               </template>
               <v-list-tile>
                 <v-list-tile-action>
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{on}">
-                      <v-btn fab dark v-on="on" small color="primary" @click="addProjDialogShow()">
-                        <v-icon dark>add</v-icon>
-                      </v-btn>
-                    </template><span>Добавить проект</span>
-                  </v-tooltip>
+                  <v-btn fab dark small color="primary" @click="addProjDialogShow()" title="Добавить проект">
+                    <v-icon dark>add</v-icon>
+                  </v-btn>
+                  <!--v-tooltip(bottom)
+                  template(v-slot:activator="{on}")
+                      v-btn(fab dark v-on="on" small color="primary" @click="addProjDialogShow()")
+                          v-icon(dark) add
+                  span Добавить проект
+                  -->
                 </v-list-tile-action>
+              </v-list-tile>
+              <v-list-tile :to="{path:'/project/'+project.id}" v-for="project in projects" :key="'project'+project.id">
+                <v-list-tile-action>
+                  <v-icon></v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title>{{project.name}}</v-list-tile-title>
+                </v-list-tile-content>
               </v-list-tile>
               <!--v-list-tile(:to="{path:'/user'}")
               v-list-tile-action
@@ -82,7 +92,7 @@
             -->
           </v-list>
         </v-navigation-drawer>
-        <v-dialog v-model="addProjDialog.visible" width="500">
+        <v-dialog v-model="addProjDialog.visible" width="500" v-if="addProjDialog.proj != null">
           <v-card>
             <v-card-title>Добавление проекта
               <v-spacer></v-spacer>
