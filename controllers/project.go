@@ -39,10 +39,15 @@ func (c *ProjectController) Save() {
 	r := BoolResult{Result: false, Error: "Initial state"}
 	obj := models.Project{}
 	c.ReadInputObj(&obj)
-	if obj.Id == 0 {
-		c.Create(&obj, &r)
+	if obj.Name == "" || obj.GenPath == "" {
+		r.Result = false
+		r.Error = "Не введено имя или папка для генерации проекта"
 	} else {
-		c.Update(&obj, &r)
+		if obj.Id == 0 {
+			c.Create(&obj, &r)
+		} else {
+			c.Update(&obj, &r)
+		}
 	}
 	c.Data["json"] = r
 	c.ServeJSON()
@@ -109,17 +114,29 @@ func (c *ProjectController) Delete() {
 		db.Where("id = ?", id).First(&obj)
 		//Удаление
 		if obj.Id > 0 {
-			tr := db.Begin()
-			defer tr.Close()
-			if err := tr.Delete(&obj).Error; err != nil {
-				tr.Rollback()
+			//Проверяем, есть ли сущности
+			cnt := 0
+			if err := db.Raw("select count(id) from entities where project_id = ?", obj.Id).Row().Scan(&cnt); err != nil {
 				r.Result = false
 				r.Error = err.Error()
-				r.Ext = obj.Id
 			} else {
-				tr.Commit()
-				r.Result = true
-				r.Error = "Удаление успешно завершено"
+				if cnt > 0 {
+					r.Result = false
+					r.Error = "Сначала необходимо удалить все дочерние сущности"
+				} else {
+					tr := db.Begin()
+					defer tr.Close()
+					if err := tr.Delete(&obj).Error; err != nil {
+						tr.Rollback()
+						r.Result = false
+						r.Error = err.Error()
+						r.Ext = obj.Id
+					} else {
+						tr.Commit()
+						r.Result = true
+						r.Error = "Удаление успешно завершено"
+					}
+				}
 			}
 		} else {
 			r.Result = false

@@ -13,7 +13,12 @@ type EntityController struct {
 func (c *EntityController) Select() {
 	if c.Ctx.Input.Param(":ext") == "json" {
 		res := make([]models.Entity, 0)
-		Db.Order("id desc").Find(&res)
+		sProjectId := c.GetString("project_id")
+		if projectId, err := strconv.Atoi(sProjectId); err != nil {
+			Db.Order("id desc").Find(&res)
+		} else {
+			Db.Order("id desc").Find(&res, "project_id = ?", projectId)
+		}
 		c.Data["json"] = res
 		c.ServeJSON()
 	}

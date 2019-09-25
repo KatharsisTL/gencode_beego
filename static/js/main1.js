@@ -47,12 +47,11 @@ function main() {
                 });
             },
             addProjDialogShow() {
-                this.addProjDialog.proj = {
+                this.projectEdit(this.addProjDialog.proj = {
                     id: 0,
                     name: "",
                     gen_path: ""
-                };
-                this.addProjDialog.visible = true;
+                });
             },
             projectEdit(proj) {
                 this.addProjDialog.proj = proj;
@@ -63,8 +62,7 @@ function main() {
                 this.addProjDialog.visible = false;
             },
             addProjDialogSave() {
-                if(this.addProjDialog.valid) {
-                    console.log(this.addProjDialog.proj);
+                if(this.$refs["addProjForm"].validate()) {
                     Fetch.Json("/project/save", "POST", this.addProjDialog.proj).then((res)=>{
                         console.log(res);
                         if(res.result) {
