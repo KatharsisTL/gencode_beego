@@ -1,6 +1,6 @@
 import * as Fetch from "../../utils/fetch.js";
 
-export function Init() {
+export function init() {
     Vue.component("vn-entities", {
         props: [
             'project-id'
@@ -9,11 +9,16 @@ export function Init() {
         template: `<div class="vn-entities">
             <v-dialog v-model="edit.visible" width="500" v-if="edit.entity != null">
                 <v-card>
-                    <v-card-title>Добавление сущности<v-spacer></v-spacer><v-btn fab flat small @click="editDlgClose()"><v-icon>close</v-icon></v-btn></v-card-title>
+                    <v-card-title>
+                        <span v-if="edit.entity.id == 0">Добавление сущности</span>
+                        <span v-else>Редактирование сущности [{{edit.entity.name}}]</span>
+                        <v-spacer></v-spacer><v-btn fab flat small @click="editDlgClose()"><v-icon>close</v-icon></v-btn></v-card-title>
                     <v-divider></v-divider>
                     <v-card-text>
                         <v-form ref="editEntityForm" v-model="edit.valid" lazy-validation>
                             <v-text-field v-model="edit.entity.name" :rules="edit.rules.name" label="Имя сущности" required></v-text-field>
+                            <v-text-field v-model="edit.entity.label" :rules="edit.rules.label" label="Метка (label) сущности" required></v-text-field>
+                            <v-text-field v-model="edit.entity.descr" label="Описание сущности"></v-text-field>
                         </v-form>
                     </v-card-text>
                     <v-divider></v-divider>
@@ -37,10 +42,10 @@ export function Init() {
             <v-divider></v-divider>
             <template v-for="e in entities">
                 <v-layout row nowrap>
-                    <v-flex xs10>
-                        <v-card-text :key="e.id">{{e.name}}</v-card-text>    
+                    <v-flex xs8 md10>
+                        <v-card-text :key="e.id">{{e.name}} [{{e.label}}]</v-card-text>    
                     </v-flex>
-                    <v-flex xs2 text-xs-right>
+                    <v-flex xs4 md2 text-xs-right>
                         <v-btn fab small color="warning" title="Редактировать" @click="editDlgOpen(e)"><v-icon>edit</v-icon></v-btn>
                         <v-btn fab small color="error" title="Удалить"><v-icon>delete</v-icon></v-btn>
                     </v-flex>
@@ -48,6 +53,7 @@ export function Init() {
                 
                 <v-divider :key="'divider_'+e.id"></v-divider>
             </template>
+            <v-card-text><vn-simple-dict></vn-simple-dict></v-card-text>
             
 </div>`,
         data: function() {
@@ -59,6 +65,9 @@ export function Init() {
                     entity: null,
                     rules: {
                         name: [
+                            v => !!v || "Не должно быть пустым"
+                        ],
+                        label: [
                             v => !!v || "Не должно быть пустым"
                         ]
                     }
@@ -87,6 +96,8 @@ export function Init() {
                 this.editDlgOpen({
                     id: 0,
                     name: "",
+                    label: "",
+                    descr: "",
                     project_id: parseInt(this.projectId)
                 });
             },

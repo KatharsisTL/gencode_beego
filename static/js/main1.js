@@ -2,6 +2,7 @@ import * as Fetch from "./utils/fetch.js"
 import {Snackbar} from "./vue/mixins/snackbar.js";
 import {ProjectVue} from "./vue/routes/project.js";
 import * as VnEntities from "./vue/components/vn-entities.js";
+import * as VnSimpleDict from "./vue/components/vn-simple-dict.js";
 
 document.addEventListener("DOMContentLoaded", main);
 
@@ -12,7 +13,8 @@ let router;
 let app;
 
 function main() {
-    VnEntities.Init();
+    VnEntities.init();
+    VnSimpleDict.init();
 
     router = new VueRouter({routes});
     app = new Vue({
